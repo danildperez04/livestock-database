@@ -10,21 +10,16 @@ CREATE TABLE user(
     birth_date DATE NOT NULL,
     PRIMARY KEY (id_user)
 );
-CREATE TABLE vaccine(
-    id_vaccine INT(12) NOT NULL AUTO_INCREMENT,
-    vaccine_name VARCHAR(16) NOT NULL,
-    vaccinedesc TEXT,
-    PRIMARY KEY (id_vaccine)
-);
 CREATE TABLE breed(
     id_breed INT(12) NOT NULL AUTO_INCREMENT,
     breed_name VARCHAR(16) NOT NULL,
-    PRIMARY KEY (id_vaccine)
+    PRIMARY KEY (id_breed)
 );
-CREATE TABLE animal(
+CREATE TABLE cow(
     id_cow INT(12) NOT NULL AUTO_INCREMENT,
     id_breed INT(12),
-    description TEXT,
+    cow_desc TEXT,
+    alive BOOLEAN,
     gender VARCHAR(10) DEFAULT 'Macho',
     CHECK (
         gender = 'Macho'
@@ -33,9 +28,13 @@ CREATE TABLE animal(
     PRIMARY KEY (id_cow),
     FOREIGN KEY (id_breed) REFERENCES breed(id_breed)
 );
+CREATE TABLE vaccine(
+    id_vaccine INT(12) NOT NULL AUTO_INCREMENT,
+    vaccine_name VARCHAR(16) NOT NULL,
+    vaccine_desc TEXT,
+    PRIMARY KEY (id_vaccine)
+);
 CREATE TABLE cow - vaccine(
-    -- fecha de la vacuna
-    -- cantidad de medicamento 
     -- tipo de medicamento 
     -- crear tabla inventario
     id_cow INT(12) NOT NULL,
@@ -57,4 +56,8 @@ CREATE TABLE cow - birth(
     FOREIGN KEY (id_father) REFERENCES cow(id_cow),
     FOREIGN KEY (id_mother) REFERENCES cow(id_cow)
 );
-CREATE TABLE inventory();
+CREATE TABLE inventory(
+    id INT(12) NOT NULL,
+    amount INT(8) DEFAULT 0,
+    PRIMARY KEY (id)
+);
