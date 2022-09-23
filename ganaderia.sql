@@ -61,3 +61,21 @@ CREATE TABLE inventory(
     amount INT(8) DEFAULT 0,
     PRIMARY KEY (id)
 );
+/*
+!pull request for Dani
+CREATE TABLE foreign - cow(
+    id_cow_foreign INT(12) NOT NULL AUTO_INCREMENT,
+    id_seller INT(12),
+    origin VARCHAR(60),
+    PRIMARY KEY(id_cow_foreigns),
+    FOREIGN KEY (id_seller) REFERENCES seller(id_seller)
+);
+
+CREATE TABLE seller(
+    id_seller INT(12) NOT NULL AUTO_INCREMENT,
+    name_seller VARCHAR(16),
+    contact_seller VARCHAR(20),
+    PRIMARY KEY (id_seller)
+);
+*/
+
