@@ -92,7 +92,22 @@ CREATE TABLE operation(
     id_third INT(12),
     operation VARCHAR(12) DEFAULT 'PURCHASE',
     CHECK(operation = 'PURCHASE' OR operation = 'SALE'),
-    PRIMARY KEY(id_cow_foreigns),
+    PRIMARY KEY(id_operation),
     FOREIGN KEY (id_third) REFERENCES third-people(id_third)
+    FOREIGN KEY (id_cow) REFERENCES cow(id_cow)
+);
+
+-- Lots
+CREATE TABLE lot(
+    id_lot INT(12) NOT NULL AUTO_INCREMENT,
+    lot_address VARCHAR(40),
+    cow_amount INT(8),
+    PRIMARY KEY (id_lot)
+);
+
+CREATE TABLE lot-cow(
+    id_lot INT(12),
+    id_cow INT(12),
+    FOREIGN KEY (id_lot) REFERENCES lot(id_lot),
     FOREIGN KEY (id_cow) REFERENCES cow(id_cow)
 );
