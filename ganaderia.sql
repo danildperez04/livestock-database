@@ -1,6 +1,7 @@
 CREATE DATABASE IF NOT EXISTS ganaderia;
 USE ganaderia;
--- Crear tabla
+
+-- Platform
 CREATE TABLE user(
     id_user INT(12) NOT NULL AUTO_INCREMENT,
     username VARCHAR(16) NOT NULL,
@@ -10,14 +11,16 @@ CREATE TABLE user(
     birth_date DATE NOT NULL,
     PRIMARY KEY (id_user)
 );
+
+-- Cows
 CREATE TABLE breed(
     id_breed INT(12) NOT NULL AUTO_INCREMENT,
     breed_name VARCHAR(16) NOT NULL,
     PRIMARY KEY (id_breed)
 );
+
 CREATE TABLE cow(
     id_cow INT(12) NOT NULL AUTO_INCREMENT,
-    id_breed INT(12),
     cow_desc TEXT,
     alive BOOLEAN,
     gender VARCHAR(10) DEFAULT 'Macho',
@@ -26,15 +29,45 @@ CREATE TABLE cow(
         OR gender = 'Hembra'
     ),
     PRIMARY KEY (id_cow),
-    FOREIGN KEY (id_breed) REFERENCES breed(id_breed)
 );
+
+CREATE TABLE breed-cow(
+    id_breed INT(12),
+    id_cow INT(12),
+    FOREIGN KEY (id_breed) REFERENCES breed(id_breed)
+    FOREIGN KEY (id_cow) REFERENCES cow(id_cow)
+)
+
+CREATE TABLE cow-birth(
+    id_cowbirth INT(12) NOT NULL,
+    id_cow INT(12),
+    id_father INT(12),
+    id_mother INT(12),
+    birth_date DATE NOT NULL,
+    weight DOUBLE(4, 4) NOT NULL,
+    PRIMARY KEY (id_cowbirth),
+    FOREIGN KEY (id_cow) REFERENCES cow(id_cow),
+    FOREIGN KEY (id_father) REFERENCES cow(id_cow),
+    FOREIGN KEY (id_mother) REFERENCES cow(id_cow)
+);
+
+-- Vaccines
 CREATE TABLE vaccine(
     id_vaccine INT(12) NOT NULL AUTO_INCREMENT,
     vaccine_name VARCHAR(16) NOT NULL,
     vaccine_desc TEXT,
     PRIMARY KEY (id_vaccine)
 );
-CREATE TABLE cow - vaccine(
+
+CREATE TABLE inventory(
+    id INT(12) NOT NULL,
+    id_vaccine INT(12),
+    amount INT(8) DEFAULT 0,
+    PRIMARY KEY (id),
+    FOREIGN KEY(id_vaccine) REFERENCES vaccine(id_vaccine)
+);
+
+CREATE TABLE cow-vaccine(
     -- tipo de medicamento 
     -- crear tabla inventario
     id_cow INT(12) NOT NULL,
@@ -44,38 +77,22 @@ CREATE TABLE cow - vaccine(
     FOREIGN KEY (id_cow) REFERENCES cow(id_cow),
     FOREIGN KEY (id_vaccine) REFERENCES vaccine(id_vaccine)
 );
-CREATE TABLE cow - birth(
-    id_cowbirth INT(12) NOT NULL,
-    id_cow INT(12) NOT NULL,
-    id_father INT(12) NOT NULL,
-    id_mother INT(12) NOT NULL,
-    birth_date DATE NOT NULL,
-    weight DOUBLE(4, 4) NOT NULL,
-    PRIMARY KEY (id_cowbirth),
-    FOREIGN KEY (id_cow) REFERENCES cow(id_cow),
-    FOREIGN KEY (id_father) REFERENCES cow(id_cow),
-    FOREIGN KEY (id_mother) REFERENCES cow(id_cow)
+
+-- Operations
+CREATE TABLE third-people(
+    id_third INT(12) NOT NULL AUTO_INCREMENT,
+    fullname VARCHAR(16),
+    contact VARCHAR(20),
+    PRIMARY KEY (id_thir)
 );
-CREATE TABLE inventory(
-    id INT(12) NOT NULL,
-    amount INT(8) DEFAULT 0,
-    PRIMARY KEY (id)
-);
-/*
-!pull request for Dani
-CREATE TABLE foreign - cow(
-    id_cow_foreign INT(12) NOT NULL AUTO_INCREMENT,
-    id_seller INT(12),
-    origin VARCHAR(60),
+
+CREATE TABLE operation(
+    id_operation INT(12) NOT NULL AUTO_INCREMENT,
+    id_cow INT(12),
+    id_third INT(12),
+    operation VARCHAR(12) DEFAULT 'PURCHASE',
+    CHECK(operation = 'PURCHASE' OR operation = 'SALE'),
     PRIMARY KEY(id_cow_foreigns),
-    FOREIGN KEY (id_seller) REFERENCES seller(id_seller)
+    FOREIGN KEY (id_third) REFERENCES third-people(id_third)
+    FOREIGN KEY (id_cow) REFERENCES cow(id_cow)
 );
-
-CREATE TABLE seller(
-    id_seller INT(12) NOT NULL AUTO_INCREMENT,
-    name_seller VARCHAR(16),
-    contact_seller VARCHAR(20),
-    PRIMARY KEY (id_seller)
-);
-*/
-
